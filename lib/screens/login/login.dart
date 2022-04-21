@@ -17,7 +17,7 @@ class OurLogin extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.all(40.0),
-                child: Image.asset("assets/logo.png"),
+                child: Image.asset("assets/logo.png", width: 300, height: 300,),
               ),
               SizedBox(
                 height: 20.0,
