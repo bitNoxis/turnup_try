@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:turnup_try/screens/map/map.dart';
 import 'package:turnup_try/screens/signup/signup.dart';
 
 import '../../../widgets/ourContainer.dart';
 
 class OurLoginForm extends StatelessWidget {
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return OurContainer(
@@ -23,12 +28,14 @@ class OurLoginForm extends StatelessWidget {
             ),
           ),
           TextFormField(
+            controller: emailController,
             decoration: InputDecoration(prefixIcon: Icon(Icons.alternate_email),
               hintText: "E-Mail",
             ),
           ),
           SizedBox(height: 20.0,),
           TextFormField(
+            controller: passwordController,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.lock_outline_rounded),
               hintText: "Passwort",
@@ -44,7 +51,28 @@ class OurLoginForm extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               )
             ),
-            onPressed: () {},
+            onPressed: () {
+              if (emailController.text == "user" && passwordController.text == "password") {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => OurMap()
+                ),
+                );
+              } else {
+                showDialog(context: context, builder: (context){
+                  return AlertDialog(
+                    content: Text("Something went wrong try again pls"),
+                  );
+                });
+              }
+              // showDialog(
+              //   context: context,
+              //   builder: (context){
+              //     return AlertDialog(
+              //       content: Text(myController.text),
+              //     );
+              // Navigator.of(context).push(MaterialPageRoute(builder: (context) => OurMap(),
+              // )
+              // );
+            },
           ),
           TextButton(
               child: Text("Noch keinen Account? Hier registrieren."),
@@ -58,4 +86,7 @@ class OurLoginForm extends StatelessWidget {
       ),
     );
   }
+
+
+
 }
