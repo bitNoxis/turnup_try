@@ -19,6 +19,7 @@ class AnimatedMarkersMap extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Animated Markers'),
+        backgroundColor: Color.fromARGB(255, 24, 24, 24),
         actions: [
           IconButton(
             icon: Icon(Icons.filter_alt_outlined),
@@ -33,7 +34,8 @@ class AnimatedMarkersMap extends StatelessWidget {
               minZoom: 5,
               maxZoom: 16,
               zoom: 11.8,
-              interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+              interactiveFlags:
+                  InteractiveFlag.pinchZoom | InteractiveFlag.drag,
               center: _myLocation,
             ),
             layers: [
