@@ -7,7 +7,7 @@ const MAPBOX_ACCESS_TOKEN =
     'pk.eyJ1IjoibHVjYXNtYXR6ZSIsImEiOiJjbDI4dmtjcHAwYm95M2ptZXM1N3c4dGt3In0._6J67UkB6tn-o_z6quqSkg';
 const MARKER_COLOR = Color(0xFF3DC5A7);
 const URL_TEMPLATE =
-    'https://api.mapbox.com/styles/v1/lucasmatze/cl28vr80f000415l1guw9ojlx/tiles/{z}/{y}/{x}?access_token={accessToken}';
+    'https://api.mapbox.com/styles/v1/lucasmatze/cl28vr80f000415l1guw9ojlx/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVjYXNtYXR6ZSIsImEiOiJjbDI4dmtjcHAwYm95M2ptZXM1N3c4dGt3In0._6J67UkB6tn-o_z6quqSkg';
 
 final _myLocation = LatLng(53.45, 9.97);
 
@@ -30,16 +30,17 @@ class AnimatedMarkersMap extends StatelessWidget {
         children: [
           FlutterMap(
             options: MapOptions(
-              minZoom: 5,
-              maxZoom: 16,
+              //minZoom: 5,
+              //maxZoom: 16,
               zoom: 11.8,
-              center: LatLng(53.45, 9.97),
+              center: _myLocation,
             ),
             nonRotatedLayers: [
               TileLayerOptions(
                 urlTemplate: URL_TEMPLATE,
                 additionalOptions: {
                   'accessToken': MAPBOX_ACCESS_TOKEN,
+                  'id': 'mapbox.mapbox-streets-v8',
                 },
               ),
               MarkerLayerOptions(markers: [
