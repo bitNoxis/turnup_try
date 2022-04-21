@@ -35,7 +35,7 @@ class AnimatedMarkersMap extends StatelessWidget {
               zoom: 11.8,
               center: _myLocation,
             ),
-            nonRotatedLayers: [
+            layers: [
               TileLayerOptions(
                 urlTemplate: URL_TEMPLATE,
                 additionalOptions: {
