@@ -30,8 +30,8 @@ class AnimatedMarkersMap extends StatelessWidget {
         children: [
           FlutterMap(
             options: MapOptions(
-              //minZoom: 5,
-              //maxZoom: 16,
+              minZoom: 5,
+              maxZoom: 16,
               zoom: 11.8,
               center: _myLocation,
             ),
