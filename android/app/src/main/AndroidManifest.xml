@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.turnup_try">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="turnup_try"
         android:name="${applicationName}"
