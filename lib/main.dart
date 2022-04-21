@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:turnup_try/screens/login/login.dart';
+import 'package:turnup_try/screens/map/map.dart';
 import 'package:turnup_try/utils/ourTheme.dart';
 
 void main() {

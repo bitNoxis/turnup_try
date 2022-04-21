@@ -10,8 +10,8 @@ class OurMap extends StatelessWidget {
     return Scaffold(
         body: FlutterMap(
       options: MapOptions(
-        center: latlng.LatLng(53.5, 9.99),
-        zoom: 13.0,
+        center: latlng.LatLng(53.45, 9.97),
+        zoom: 11.8,
       ),
       layers: [
         TileLayerOptions(
@@ -29,8 +29,8 @@ class OurMap extends StatelessWidget {
         MarkerLayerOptions(
           markers: [
             Marker(
-              width: 40.0,
-              height: 40.0,
+              width: 30.0,
+              height: 30.0,
               point: latlng.LatLng(53.4528864, 9.9734488),
               builder: (ctx) => Container(
                 child: FlutterLogo(),
