@@ -5,7 +5,6 @@ import 'package:latlong2/latlong.dart';
 
 const MAPBOX_ACCESS_TOKEN =
     'pk.eyJ1IjoibHVjYXNtYXR6ZSIsImEiOiJjbDI4dmtjcHAwYm95M2ptZXM1N3c4dGt3In0._6J67UkB6tn-o_z6quqSkg';
-const MAPBOX_STYLE = 'mapbox/dark-v10';
 const MARKER_COLOR = Color(0xFF3DC5A7);
 const URL_TEMPLATE =
     'https://api.mapbox.com/styles/v1/lucasmatze/cl28vr80f000415l1guw9ojlx/tiles/{z}/{y}/{x}?access_token={accessToken}';
@@ -41,7 +40,6 @@ class AnimatedMarkersMap extends StatelessWidget {
                 urlTemplate: URL_TEMPLATE,
                 additionalOptions: {
                   'accessToken': MAPBOX_ACCESS_TOKEN,
-                  'id': MAPBOX_STYLE,
                 },
               ),
               MarkerLayerOptions(markers: [
