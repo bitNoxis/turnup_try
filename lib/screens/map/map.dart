@@ -8,7 +8,7 @@ const MAPBOX_ACCESS_TOKEN =
 const MAPBOX_STYLE = 'mapbox/dark-v10';
 const MARKER_COLOR = Color(0xFF3DC5A7);
 const URL_TEMPLATE =
-    'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{y}/{x}?access_token={accessToken}';
+    'https://api.mapbox.com/styles/v1/lucasmatze/cl28vr80f000415l1guw9ojlx/tiles/{z}/{y}/{x}?access_token={accessToken}';
 
 final _myLocation = LatLng(53.45, 9.97);
 
