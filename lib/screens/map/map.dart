@@ -33,6 +33,7 @@ class AnimatedMarkersMap extends StatelessWidget {
               minZoom: 5,
               maxZoom: 16,
               zoom: 11.8,
+              interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
               center: _myLocation,
             ),
             layers: [
