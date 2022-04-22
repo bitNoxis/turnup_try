@@ -35,7 +35,7 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap> {
               onTap: () {
                 print('Selected: ${mapItem.title}');
               },
-              child: Image.asset('assets/logo.png'),
+              child: Image.asset('assets/mapmarker.png'),
             );
           },
         ),
@@ -142,7 +142,7 @@ class _MapItemDetails extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         child: Card(
           margin: EdgeInsets.zero,
-          color: Colors.white,
+          color: Colors.grey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

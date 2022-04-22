@@ -7,6 +7,7 @@ class MapMarker {
     required this.address,
     required this.location,
   });
+
   final String image;
   final String title;
   final String address;
