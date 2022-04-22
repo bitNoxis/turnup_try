@@ -35,7 +35,7 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap> {
               onTap: () {
                 print('Selected: ${mapItem.title}');
               },
-              child: Image.asset('assets/mapmarker.png'),
+              child: Image.asset('assets/logo.png'),
             );
           },
         ),
