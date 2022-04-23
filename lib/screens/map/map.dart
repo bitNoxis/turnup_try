@@ -142,7 +142,7 @@ class _MapItemDetails extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         child: Card(
           margin: EdgeInsets.zero,
-          color: Colors.grey,
+          color: Colors.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
