@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "926347121974",
+    "project_id": "turnup-advisor",
+    "storage_bucket": "turnup-advisor.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926347121974:android:b3ac1f9c83140cfb178f97",
+        "android_client_info": {
+          "package_name": "com.turnup.advisor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "926347121974-cg23q82oamefsqdbpm50q94d221a1g1n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBynGYUk7cAIQjG62EvCkszuSZ-SeAwipg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "926347121974-cg23q82oamefsqdbpm50q94d221a1g1n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

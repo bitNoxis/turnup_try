@@ -1,11 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:turnup_try/screens/signup/signup.dart';
 
 import '../../../widgets/ourContainer.dart';
 
-class OurLoginForm extends StatelessWidget {
+class OurSignUpForm extends StatelessWidget {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -18,13 +17,22 @@ class OurLoginForm extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
             child: Text(
-              "Einloggen",
+              "Registrieren",
               style: TextStyle(
                 color: Theme.of(context).secondaryHeaderColor,
                 fontSize: 25.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.person_outline),
+              hintText: "Username",
+            ),
+          ),
+          const SizedBox(
+            height: 20.0,
           ),
           TextFormField(
             controller: emailController,
@@ -48,39 +56,31 @@ class OurLoginForm extends StatelessWidget {
             height: 20.0,
           ),
           ElevatedButton(
-              child: const Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 80),
-                child: Text(
-                  "Einloggen",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15.0),
-                ),
+            child: const Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 80),
+              child: Text(
+                "Registrieren",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.0),
               ),
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              )),
-              onPressed: () {
-                FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                        email: emailController.text,
-                        password: passwordController.text)
-                    .then((value) {
-                  Navigator.of(context).pushReplacementNamed("/home");
-                }).onError((error, stackTrace) {
-                  print("Error ${error.toString()}");
-                });
-              }),
-          TextButton(
-            child: const Text("Noch keinen Account? Hier registrieren."),
+            ),
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            )),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => OurSignUp(),
-                ),
-              );
+              FirebaseAuth.instance
+                  .createUserWithEmailAndPassword(
+                      email: emailController.text,
+                      password: passwordController.text)
+                  .then((value) {
+                print("Neuer Account erstellt");
+                Navigator.of(context).pushReplacementNamed("/home");
+              }).onError((error, stackTrace) {
+                print("Error ${error.toString()}");
+              });
             },
           ),
         ],

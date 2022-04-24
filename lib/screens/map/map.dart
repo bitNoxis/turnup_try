@@ -139,13 +139,24 @@ class _MapItemDetails extends StatelessWidget {
         color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold);
     final _styleAddress = TextStyle(color: Colors.grey[800], fontSize: 14);
     return Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Card(
-          margin: EdgeInsets.zero,
-          color: Colors.white,
+        padding: const EdgeInsets.all(20.0),
+        child: Container(
+          padding: EdgeInsets.all(20.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20.0),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.grey,
+                blurRadius: 10.0,
+                spreadRadius: 1.0,
+                offset: Offset(4.0, 4.0),
+              )
+            ],
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+            children: <Widget>[
               Expanded(
                 child: Row(children: [
                   Expanded(
@@ -168,15 +179,22 @@ class _MapItemDetails extends StatelessWidget {
                   ))
                 ]),
               ),
-              MaterialButton(
-                padding: EdgeInsets.zero,
-                onPressed: () => null,
-                color: MARKER_COLOR,
-                elevation: 6,
-                child: Text(
-                  'Call',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+              ElevatedButton(
+                child: const Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 80),
+                  child: Text(
+                    "Call",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15.0),
+                  ),
                 ),
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                )),
+                onPressed: () {},
               ),
             ],
           ),
