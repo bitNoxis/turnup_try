@@ -157,7 +157,7 @@ class _LocationMarker extends StatelessWidget {
         height: size,
         width: size,
         duration: const Duration(milliseconds: 400),
-        child: Image.asset('assets/mapmarker.png'),
+        child: Image.asset('assets/mapmarker_shadow.png'),
       ),
     );
   }
