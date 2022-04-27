@@ -64,7 +64,7 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
   @override
   void initState() {
     _animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 600));
+        vsync: this, duration: const Duration(milliseconds: 800));
     _animationController.repeat(reverse: true);
     super.initState();
   }
@@ -174,7 +174,7 @@ class _MyLocationMarker extends AnimatedWidget {
   Widget build(BuildContext context) {
     final value = (listenable as Animation<double>).value;
     final newValue = lerpDouble(0.5, 1.0, value)!;
-    final size = 50.0;
+    final size = 40.0;
     return Center(
         child: Stack(
       children: [
