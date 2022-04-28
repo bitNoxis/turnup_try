@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -80,7 +79,7 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
     final _markers = _buildMarkers();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Animated Markers'),
+        title: const Text('Animated Markers'),
         backgroundColor: Color.fromARGB(255, 24, 24, 24),
         actions: [
           IconButton(
@@ -149,6 +148,7 @@ class _LocationMarker extends StatelessWidget {
   const _LocationMarker({Key? key, this.selected = false}) : super(key: key);
 
   final bool selected;
+
   @override
   Widget build(BuildContext context) {
     final size = selected ? MARKER_SIZE_EXPANDED : MARKER_SIZE_SHRINKED;

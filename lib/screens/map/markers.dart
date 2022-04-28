@@ -24,6 +24,7 @@ final _locations = [
 
 const _path = 'assets/';
 
+/// creates marker on the map
 final mapMarkers = [
   MapMarker(
     image: '${_path}logo.png',

@@ -49,7 +49,7 @@ class OurLoginForm extends StatelessWidget {
           ),
           ElevatedButton(
               child: const Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 80),
+                padding: EdgeInsets.symmetric(horizontal: 80),
                 child: Text(
                   "Einloggen",
                   style: TextStyle(

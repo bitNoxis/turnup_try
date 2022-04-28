@@ -13,17 +13,17 @@ class OurLogin extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: ListView(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(40.0),
+                padding: const EdgeInsets.all(40.0),
                 child: Image.asset(
                   "assets/logo.png",
                   width: 300,
                   height: 300,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
               OurLoginForm()

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class OurTheme {
-  Color _lightGreen = Color.fromARGB(255, 213, 235, 220);
-  Color _lightGrey = Color.fromARGB(255, 164, 164, 164);
-  Color _darkeyGrey = Color.fromARGB(255, 199, 124, 135);
+  final Color _lightGreen = Color.fromARGB(255, 213, 235, 220);
+  final Color _lightGrey = Color.fromARGB(255, 164, 164, 164);
+  final Color _darkeyGrey = Color.fromARGB(255, 199, 124, 135);
 
   ThemeData buildTheme() {
     return ThemeData(
