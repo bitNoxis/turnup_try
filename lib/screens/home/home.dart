@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:turnup_try/screens/map/map.dart';
+import 'package:turnup_try/screens/users/test.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,31 +11,50 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Eventueller HomeScreen"),
+        title: const Text("Eventueller HomeScreen"),
       ),
       body: Center(
-        child: ElevatedButton(
-          child: const Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 80),
-            child: Text(
-              "Zur Map",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15.0),
-            ),
-          ),
-          style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          )),
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AnimatedMarkersMap(),
+        child: ButtonBar(
+          children: <Widget>[
+            ElevatedButton(
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 80),
+                child: Text(
+                  "Zur Map",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.0),
+                ),
               ),
-            );
-          },
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20))),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const AnimatedMarkersMap()));
+              },
+            ),
+            ElevatedButton(
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 80),
+                child: Text(
+                  "Test ",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.0),
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20))),
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const OurUsers()));
+              },
+            ),
+          ],
         ),
       ),
     );

@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:turnup_try/utils/firebase.dart';
 
 import '../../../widgets/ourContainer.dart';
 
 class OurSignUpForm extends StatelessWidget {
+  final userNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -26,6 +29,7 @@ class OurSignUpForm extends StatelessWidget {
             ),
           ),
           TextFormField(
+            controller: userNameController,
             decoration: const InputDecoration(
               prefixIcon: Icon(Icons.person_outline),
               hintText: "Username",
@@ -57,7 +61,7 @@ class OurSignUpForm extends StatelessWidget {
           ),
           ElevatedButton(
             child: const Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 80),
+              padding: EdgeInsets.symmetric(horizontal: 80),
               child: Text(
                 "Registrieren",
                 style: TextStyle(
@@ -70,17 +74,21 @@ class OurSignUpForm extends StatelessWidget {
                 shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             )),
-            onPressed: () {
-              FirebaseAuth.instance
-                  .createUserWithEmailAndPassword(
-                      email: emailController.text,
-                      password: passwordController.text)
-                  .then((value) {
-                print("Neuer Account erstellt");
+            onPressed: () async {
+              try {
+                await Firebase.initializeApp();
+                UserCredential user =
+                await FirebaseAuth.instance
+                    .createUserWithEmailAndPassword(
+                    email: emailController.text,
+                    password: passwordController.text);
+                User? updateUser = FirebaseAuth.instance.currentUser;
+                updateUser?.updateDisplayName(userNameController.text);
+                userSetup(userNameController.text);
                 Navigator.of(context).pushReplacementNamed("/home");
-              }).onError((error, stackTrace) {
-                print("Error ${error.toString()}");
-              });
+              } catch (e) {
+                print(e.toString());
+              }
             },
           ),
         ],
