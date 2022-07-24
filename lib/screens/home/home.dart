@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:turnup_try/screens/map/map.dart';
 import 'package:turnup_try/screens/users/test.dart';
