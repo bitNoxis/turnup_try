@@ -14,14 +14,12 @@ class OurUsers extends StatefulWidget {
 class _OurUsers extends State<OurUsers> {
   final controller = TextEditingController();
   final numberController = TextEditingController();
-  static String currentlySelected = '';
-  Stream<List<User>> users = readUsers();
+  Stream<List<User>> users = readUsersList((user) => true);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // automaticallyImplyLeading: false,
         title: const Text("Users"),
       ),
       body: Column(
@@ -42,8 +40,6 @@ class _OurUsers extends State<OurUsers> {
                   users = readUsersList((user) =>
                       user.name.toLowerCase().contains(text.toLowerCase()));
                 });
-                // users = readUsersList((user) => user.name.toLowerCase().contains(text.toLowerCase()));
-                // readUsersList((user) => user.name.toLowerCase().contains(text.toLowerCase()));
               },
             ),
           ),
@@ -68,41 +64,13 @@ class _OurUsers extends State<OurUsers> {
       floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () async {
-            var docUser = FirebaseFirestore.instance
-                .collection('Users')
-                .doc(currentlySelected);
-            var snapshot = await docUser.get();
-            User test;
-            if (snapshot.exists) {
-              test = User.fromJson(snapshot.data()!);
-              docUser.update({'points': test.points + 1});
-            } else {
-              var widget = CupertinoAlertDialog(
-                title: const Text('Nothing was found'),
-                content: const Text(
-                    'Nothing was found in the Database check if you searched correctly.'),
-                actions: [
-                  CupertinoDialogAction(
-                    child: const Text('Understood'),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      return;
-                    },
-                  )
-                ],
-              );
-              showCupertinoDialog(
-                  context: context,
-                  builder: (_) => widget,
-                  barrierDismissible: true);
-            }
           }),
     );
   }
 
   Widget buildUser(User user) => ListTile(
         leading: CircleAvatar(
-            child: Text(user.points.toStringAsFixed(1)),
+          child: Text(user.points.toStringAsFixed(1)),
           radius: 40,
         ),
         title: Text(user.name),
@@ -110,7 +78,6 @@ class _OurUsers extends State<OurUsers> {
         onTap: () {
           numberController.clear();
           updateSelected(user.id);
-          currentlySelected = user.id;
         },
       );
 
@@ -125,7 +92,6 @@ class _OurUsers extends State<OurUsers> {
           type: MaterialType.canvas,
           child: TextField(
             controller: numberController,
-
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
           ),
         ),
@@ -141,8 +107,8 @@ class _OurUsers extends State<OurUsers> {
             child: const Text('Change'),
             onPressed: () {
               docUser.update({
-                'points': userToChange.points +
-                    double.parse(numberController.text)
+                'points':
+                    userToChange.points + double.parse(numberController.text)
               });
               Navigator.pop(context);
               return;
