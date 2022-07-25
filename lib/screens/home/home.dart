@@ -54,6 +54,7 @@ class HomeScreen extends StatelessWidget {
               },
             ),
           ],
+          alignment: MainAxisAlignment.center,
         ),
       ),
     );

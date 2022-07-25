@@ -32,8 +32,9 @@ dependencies:
 
   firebase_core:
   firebase_auth:
-  cloud_firestore:
+  cloud_firestore: ^3.1.4
   firebase_storage:
+  firestore_search: ^0.1.9
 
   provider:
 

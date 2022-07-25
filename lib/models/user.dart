@@ -20,4 +20,6 @@ class User {
         name: json['name'],
         points: json['points'],
       );
+
+
 }
