@@ -80,10 +80,10 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Animated Markers'),
-        backgroundColor: Color.fromARGB(255, 24, 24, 24),
+        backgroundColor: const Color.fromARGB(255, 24, 24, 24),
         actions: [
           IconButton(
-            icon: Icon(Icons.filter_alt_outlined),
+            icon: const Icon(Icons.filter_alt_outlined),
             onPressed: () => null,
           )
         ],

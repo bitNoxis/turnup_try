@@ -21,7 +21,7 @@ class _OurUsers extends State<OurUsers> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
         title: const Text("Users"),
       ),
       body: Column(
@@ -101,7 +101,10 @@ class _OurUsers extends State<OurUsers> {
   }
 
   Widget buildUser(User user) => ListTile(
-        leading: CircleAvatar(child: Text('${user.points}')),
+        leading: CircleAvatar(
+            child: Text(user.points.toStringAsFixed(1)),
+          radius: 40,
+        ),
         title: Text(user.name),
         subtitle: Text(user.id),
         onTap: () {
