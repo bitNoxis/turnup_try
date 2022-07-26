@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:turnup_try/models/user.dart';
-import 'package:turnup_try/screens/map/markers.dart';
+import 'package:turnup_try/models/markers.dart';
 
 Future<void> userSetup(String displayName) async {
   FirebaseAuth auth = FirebaseAuth.instance;

@@ -35,7 +35,6 @@ class MapMarker {
   }
 
   static LatLng latLngFromGeoPoint(GeoPoint point) {
-    print('please be calles');
     return LatLng(point.latitude, point.longitude);
   }
 }

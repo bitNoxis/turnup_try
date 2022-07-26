@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:turnup_try/screens/map/markers.dart';
+import 'package:turnup_try/models/markers.dart';
 import 'package:turnup_try/utils/firebase.dart';
 
 const MAPBOX_ACCESS_TOKEN =
@@ -17,6 +17,7 @@ const MARKER_SIZE_SHRINKED = 35.0;
 
 final _myLocation = LatLng(53.4529399, 9.9733788);
 
+/// Der Stream von Daten, welche aus der Datenbank gelesen wird
 Stream<List<MapMarker>> streamMapMarkers = readLocations();
 List<MapMarker> mapMarkers = <MapMarker>[];
 List<Marker> markers = <Marker>[];
@@ -64,6 +65,9 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
       ),
       body: Stack(
         children: [
+          /// StreamBuilder bekommt den Stream aus der Datenbank
+          /// und wandelt diesen in zwei Listen um
+          /// returns immer eine FlutterMap, evtl. ohne Marker
           StreamBuilder<List<MapMarker>>(
               stream: streamMapMarkers,
               builder: (context, snapshot) {
@@ -75,6 +79,8 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
                     markers.add(buildMarker(markersData[i], i));
                   }
                 }
+                /// Hier werden die aus dem StreamBuilder gebauten
+                /// Marker dargestellt.
                 return FlutterMap(
                   options: MapOptions(
                     minZoom: 5,
