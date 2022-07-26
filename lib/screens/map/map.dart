@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:turnup_try/screens/map/markers.dart';
+import 'package:turnup_try/utils/firebase.dart';
 
 const MAPBOX_ACCESS_TOKEN =
     'pk.eyJ1IjoibHVjYXNtYXR6ZSIsImEiOiJjbDI4dmtjcHAwYm95M2ptZXM1N3c4dGt3In0._6J67UkB6tn-o_z6quqSkg';
@@ -15,6 +16,10 @@ const MARKER_SIZE_EXPANDED = 55.0;
 const MARKER_SIZE_SHRINKED = 35.0;
 
 final _myLocation = LatLng(53.4529399, 9.9733788);
+
+Stream<List<MapMarker>> streamMapMarkers = readLocations();
+List<MapMarker> mapMarkers = <MapMarker>[];
+List<Marker> markers = <Marker>[];
 
 class AnimatedMarkersMap extends StatefulWidget {
   const AnimatedMarkersMap({Key? key}) : super(key: key);
@@ -29,43 +34,13 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
   late final AnimationController _animationController;
   int _selectedIndex = 0;
 
-  List<Marker> _buildMarkers() {
-    final _markerList = <Marker>[];
-    for (int i = 0; i < mapMarkers.length; i++) {
-      final mapItem = mapMarkers[i];
-      _markerList.add(
-        Marker(
-          height: MARKER_SIZE_EXPANDED,
-          width: MARKER_SIZE_EXPANDED,
-          point: mapItem.location,
-          builder: (_) {
-            return GestureDetector(
-              onTap: () {
-                _selectedIndex = i;
-                setState(() {
-                  _pageController.animateToPage(i,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.fastLinearToSlowEaseIn);
-                  print('Selected: ${mapItem.title}');
-                });
-              },
-              child: _LocationMarker(
-                selected: _selectedIndex == i,
-              ),
-            );
-          },
-        ),
-      );
-    }
-    return _markerList;
-  }
-
   @override
   void initState() {
+    super.initState();
+    mapMarkers = [];
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 800));
     _animationController.repeat(reverse: true);
-    super.initState();
   }
 
   @override
@@ -76,7 +51,6 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
 
   @override
   Widget build(BuildContext context) {
-    final _markers = _buildMarkers();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Animated Markers'),
@@ -84,43 +58,53 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_alt_outlined),
-            onPressed: () => null,
+            onPressed: () {},
           )
         ],
       ),
       body: Stack(
         children: [
-          FlutterMap(
-            options: MapOptions(
-              minZoom: 5,
-              maxZoom: 16,
-              zoom: 11.8,
-              interactiveFlags:
-                  InteractiveFlag.pinchZoom | InteractiveFlag.drag,
-              center: _myLocation,
-            ),
-            layers: [
-              TileLayerOptions(
-                urlTemplate: URL_TEMPLATE,
-                additionalOptions: {
-                  'accessToken': MAPBOX_ACCESS_TOKEN,
-                  'id': 'mapbox.mapbox-streets-v8',
-                },
-              ),
-              MarkerLayerOptions(
-                markers: _markers,
-              ),
-              MarkerLayerOptions(markers: [
-                Marker(
-                    height: 60,
-                    width: 60,
-                    point: _myLocation,
-                    builder: (_) {
-                      return _MyLocationMarker(_animationController);
-                    })
-              ])
-            ],
-          ),
+          StreamBuilder<List<MapMarker>>(
+              stream: streamMapMarkers,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  markers = [];
+                  final markersData = snapshot.data;
+                  for (int i = 0; i < markersData!.length; i++) {
+                    mapMarkers.add(markersData[i]);
+                    markers.add(buildMarker(markersData[i], i));
+                  }
+                }
+                return FlutterMap(
+                  options: MapOptions(
+                    minZoom: 5,
+                    maxZoom: 16,
+                    zoom: 11.8,
+                    interactiveFlags:
+                        InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+                    center: _myLocation,
+                  ),
+                  layers: [
+                    TileLayerOptions(
+                        urlTemplate: URL_TEMPLATE,
+                        additionalOptions: {
+                          'accessToken': MAPBOX_ACCESS_TOKEN,
+                          'id': 'mapbox.mapbox-streets-v8',
+                        }),
+                    MarkerLayerOptions(markers: markers),
+                    MarkerLayerOptions(markers: [
+                      Marker(
+                          height: 60,
+                          width: 60,
+                          point: _myLocation,
+                          builder: (_) {
+                            return _MyLocationMarker(_animationController);
+                          })
+                    ]),
+                  ],
+                );
+              }),
+
           Positioned(
             left: 0,
             right: 0,
@@ -142,6 +126,28 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
       ),
     );
   }
+
+  Marker buildMarker(MapMarker marker, int i) => Marker(
+        height: MARKER_SIZE_EXPANDED,
+        width: MARKER_SIZE_EXPANDED,
+        point: marker.location,
+        builder: (_) {
+          return GestureDetector(
+            onTap: () {
+              _selectedIndex = i;
+              setState(() {
+                _pageController.animateToPage(i,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.fastLinearToSlowEaseIn);
+                debugPrint('Selected: ${marker.title}');
+              });
+            },
+            child: _LocationMarker(
+              selected: _selectedIndex == i,
+            ),
+          );
+        },
+      );
 }
 
 class _LocationMarker extends StatelessWidget {
@@ -174,7 +180,7 @@ class _MyLocationMarker extends AnimatedWidget {
   Widget build(BuildContext context) {
     final value = (listenable as Animation<double>).value;
     final newValue = lerpDouble(0.5, 1.0, value)!;
-    final size = 40.0;
+    const size = 40.0;
     return Center(
         child: Stack(
       children: [
@@ -192,7 +198,7 @@ class _MyLocationMarker extends AnimatedWidget {
           child: Container(
             height: 20,
             width: 20,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: MARKER_COLOR,
               shape: BoxShape.circle,
             ),
@@ -213,13 +219,13 @@ class _MapItemDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _styleTitle = TextStyle(
+    const _styleTitle = TextStyle(
         color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold);
     final _styleAddress = TextStyle(color: Colors.grey[800], fontSize: 14);
     return Padding(
         padding: const EdgeInsets.all(20.0),
         child: Container(
-          padding: EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20.0),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20.0),
@@ -259,7 +265,7 @@ class _MapItemDetails extends StatelessWidget {
               ),
               ElevatedButton(
                 child: const Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 80),
+                  padding: EdgeInsets.symmetric(horizontal: 80),
                   child: Text(
                     "Call",
                     style: TextStyle(
