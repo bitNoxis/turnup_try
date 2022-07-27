@@ -11,7 +11,7 @@ class MapMarker {
   final LatLng location;
 
   const MapMarker ({
-    required this.image,
+    this.image = '${_path}logo.png',
     required this.title,
     required this.address,
     required this.location,
@@ -19,7 +19,6 @@ class MapMarker {
 
   static MapMarker fromJson(Map<String, dynamic> json) {
     MapMarker marker = MapMarker(
-        image: '${_path}logo.png',
         title: json['title'],
         address: json['address'],
         location: latLngFromGeoPoint(json['LatLng'])
@@ -27,7 +26,11 @@ class MapMarker {
     return marker;
   }
 
-  dynamic toJson() => {'title': title,'address':address };
+  dynamic toJson() => {
+    'LatLng' : GeoPoint(location.latitude, location.longitude),
+    'address': address,
+    'title': title,
+  };
 
   @override
   String toString() {

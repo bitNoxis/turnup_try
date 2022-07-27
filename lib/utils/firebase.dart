@@ -29,3 +29,7 @@ Stream<List<MapMarker>> readLocations() =>
  FirebaseFirestore.instance.collection('Locations').snapshots().map((snapshot) =>
       snapshot.docs.map((doc) => MapMarker.fromJson(doc.data())).toList());
 
+Future<void> setupLocation() async {
+
+}
+

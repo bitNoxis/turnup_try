@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -58,9 +59,23 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
         backgroundColor: const Color.fromARGB(255, 24, 24, 24),
         actions: [
           IconButton(
+              icon: const Icon(Icons.add), 
+              onPressed: () async {
+                CollectionReference locations = FirebaseFirestore.instance.collection('Locations');
+                MapMarker marker = MapMarker(
+                  title: 'Test',
+                  address: 'Test Street 123',
+                  location: _myLocation
+                );
+                await locations.doc(marker.title).set(marker.toJson());
+              }
+          ),
+          IconButton(
             icon: const Icon(Icons.filter_alt_outlined),
-            onPressed: () {},
-          )
+            onPressed: () async {
+              debugPrint('this button currently does not do anything');
+            },
+          ),
         ],
       ),
       body: Stack(
@@ -79,6 +94,7 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
                     markers.add(buildMarker(markersData[i], i));
                   }
                 }
+
                 /// Hier werden die aus dem StreamBuilder gebauten
                 /// Marker dargestellt.
                 return FlutterMap(
