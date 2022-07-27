@@ -70,7 +70,17 @@ class OurLoginForm extends StatelessWidget {
                     .then((value) {
                   Navigator.of(context).pushReplacementNamed("/home");
                 }).onError((error, stackTrace) {
-                  print("Error ${error.toString()}");
+                  showDialog(context: context,
+                      builder: (context)=>AlertDialog(
+                        content: Text('Das Passwort oder die E-Mail ist falsch!'),
+                  actions:[
+                  TextButton(
+                    child: Text('Erneut versuchen'),
+                    onPressed: ()=> Navigator.pop(context),
+                  ),
+                  ],
+                  ),
+                  );
                 });
               }),
           TextButton(
