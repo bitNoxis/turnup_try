@@ -1,11 +1,15 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:turnup_try/models/markers.dart';
 import 'package:turnup_try/utils/firebase.dart';
+import 'package:turnup_try/utils/ourTheme.dart';
+
+import '../../widgets/hero_dialog_route.dart';
 
 const MAPBOX_ACCESS_TOKEN =
     'pk.eyJ1IjoibHVjYXNtYXR6ZSIsImEiOiJjbDI4dmtjcHAwYm95M2ptZXM1N3c4dGt3In0._6J67UkB6tn-o_z6quqSkg';
@@ -17,6 +21,9 @@ const MARKER_SIZE_EXPANDED = 55.0;
 const MARKER_SIZE_SHRINKED = 35.0;
 
 final _myLocation = LatLng(53.4529399, 9.9733788);
+
+final nameController = TextEditingController();
+final addressController = TextEditingController();
 
 /// Der Stream von Daten, welche aus der Datenbank gelesen wird
 Stream<List<MapMarker>> streamMapMarkers = readLocations();
@@ -59,17 +66,17 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
         backgroundColor: const Color.fromARGB(255, 24, 24, 24),
         actions: [
           IconButton(
-              icon: const Icon(Icons.add), 
+              icon: const Icon(Icons.add),
+              // TODO should create at the current Location a new Marker
               onPressed: () async {
-                CollectionReference locations = FirebaseFirestore.instance.collection('Locations');
+                CollectionReference locations =
+                    FirebaseFirestore.instance.collection('Locations');
                 MapMarker marker = MapMarker(
-                  title: 'Test',
-                  address: 'Test Street 123',
-                  location: _myLocation
-                );
+                    title: 'Test',
+                    address: 'Test Street 123',
+                    location: _myLocation);
                 await locations.doc(marker.title).set(marker.toJson());
-              }
-          ),
+              }),
           IconButton(
             icon: const Icon(Icons.filter_alt_outlined),
             onPressed: () async {
@@ -86,8 +93,9 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
           StreamBuilder<List<MapMarker>>(
               stream: streamMapMarkers,
               builder: (context, snapshot) {
+                markers = [];
+                mapMarkers = [];
                 if (snapshot.hasData) {
-                  markers = [];
                   final markersData = snapshot.data;
                   for (int i = 0; i < markersData!.length; i++) {
                     mapMarkers.add(markersData[i]);
@@ -105,6 +113,65 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
                     interactiveFlags:
                         InteractiveFlag.pinchZoom | InteractiveFlag.drag,
                     center: _myLocation,
+                    onLongPress: (tapPosition, latLng) {
+                  Navigator.push(
+                    context,
+                    HeroDialogRoute(
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: AlertDialog(
+                            title: const Text('Add a new Marker'),
+                            content: Container(
+                              child: Hero(
+                                tag: 'developer-hero',
+                                child: Container(
+                                  height: 300.0,
+                                  width: 300.0,
+                                  child: ListView(children: [
+                                    TextFormField(
+                                      decoration: const InputDecoration(
+                                        hintText: 'Name'
+                                      ),
+                                      controller: nameController,
+                                    ),
+                                    const Divider(height: 20, color: Colors.transparent,),
+                                    TextFormField(
+                                      decoration: const InputDecoration(hintText: 'Address'),
+                                      controller: addressController,
+                                    )
+                                  ],)
+                                ),
+                              ),
+                            ),
+                            actions: <Widget>[
+                              CupertinoDialogAction(
+                                child: const Text('Add Marker'),
+                                onPressed: () async {
+                                  CollectionReference locations = FirebaseFirestore.instance.collection('Locations');
+                                  MapMarker marker = MapMarker(
+                                      title: nameController.text,
+                                      address: addressController.text,
+                                      location: LatLng(latLng.latitude, latLng.longitude)
+                                  );
+                                  await locations.doc(marker.title).set(marker.toJson());
+                                  Navigator.pop(context);
+                                  return;
+                                },
+                              ),
+                              CupertinoDialogAction(
+                                child: const Text('Never Mind'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  return;
+                                },
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
                   ),
                   layers: [
                     TileLayerOptions(

@@ -108,7 +108,7 @@ class _OurUsers extends State<OurUsers> {
             onPressed: () {
               docUser.update({
                 'points':
-                    userToChange.points + double.parse(numberController.text)
+                    userToChange.points + double.parse(numberController.text.replaceAll(',', '.'))
               });
               Navigator.pop(context);
               return;
