@@ -77,17 +77,17 @@ class _OurUsers extends State<OurUsers> {
         subtitle: Text(user.id),
         onTap: () {
           numberController.clear();
-          updateSelected(user.id);
+          updateSelected(user);
         },
       );
 
-  void updateSelected(String id) async {
-    var docUser = FirebaseFirestore.instance.collection('Users').doc(id);
+  void updateSelected(User user) async {
+    var docUser = FirebaseFirestore.instance.collection('Users').doc(user.id);
     var snapshot = await docUser.get();
     if (snapshot.exists) {
       User userToChange = User.fromJson(snapshot.data()!);
       var widget = CupertinoAlertDialog(
-        title: Text(id),
+        title: Text(user.name),
         content: Material(
           type: MaterialType.canvas,
           child: TextField(

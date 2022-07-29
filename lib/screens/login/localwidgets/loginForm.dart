@@ -27,6 +27,7 @@ class OurLoginForm extends StatelessWidget {
             ),
           ),
           TextFormField(
+            keyboardType: TextInputType.emailAddress,
             controller: emailController,
             decoration: const InputDecoration(
               prefixIcon: Icon(Icons.alternate_email),
@@ -70,16 +71,17 @@ class OurLoginForm extends StatelessWidget {
                     .then((value) {
                   Navigator.of(context).pushReplacementNamed("/home");
                 }).onError((error, stackTrace) {
-                  showDialog(context: context,
-                      builder: (context)=>AlertDialog(
-                        content: Text('Das Passwort oder die E-Mail ist falsch!'),
-                  actions:[
-                  TextButton(
-                    child: Text('Erneut versuchen'),
-                    onPressed: ()=> Navigator.pop(context),
-                  ),
-                  ],
-                  ),
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      content: const Text('Das Passwort oder die E-Mail ist falsch!'),
+                      actions: [
+                        TextButton(
+                          child: const Text('Erneut versuchen'),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
+                    ),
                   );
                 });
               }),

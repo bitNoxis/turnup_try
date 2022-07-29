@@ -9,8 +9,7 @@ Future<void> userSetup(String displayName) async {
 
   User user =
       User(id: auth.currentUser!.uid.toString(), name: displayName, points: 0);
-  // users.add(user.toJson());
-  users.doc(displayName).set(user.toJson());
+  users.doc(auth.currentUser!.uid.toString()).set(user.toJson());
   return;
 }
 
@@ -29,7 +28,8 @@ Stream<List<MapMarker>> readLocations() =>
  FirebaseFirestore.instance.collection('Locations').snapshots().map((snapshot) =>
       snapshot.docs.map((doc) => MapMarker.fromJson(doc.data())).toList());
 
-Future<void> setupLocation() async {
-
+Future<void> setupLocation(MapMarker marker) async {
+  CollectionReference locations = FirebaseFirestore.instance.collection('Locations');
+  await locations.doc(marker.title).set(marker.toJson());
 }
 

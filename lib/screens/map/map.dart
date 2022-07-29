@@ -68,13 +68,11 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
               icon: const Icon(Icons.add),
               // TODO should create at the current Location a new Marker
               onPressed: () async {
-                CollectionReference locations =
-                    FirebaseFirestore.instance.collection('Locations');
                 MapMarker marker = MapMarker(
                     title: 'Test',
                     address: 'Test Street 123',
                     location: _myLocation);
-                await locations.doc(marker.title).set(marker.toJson());
+                await setupLocation(marker);
               }),
           IconButton(
             icon: const Icon(Icons.filter_alt_outlined),
@@ -146,13 +144,12 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
                               CupertinoDialogAction(
                                 child: const Text('Add Marker'),
                                 onPressed: () async {
-                                  CollectionReference locations = FirebaseFirestore.instance.collection('Locations');
                                   MapMarker marker = MapMarker(
                                       title: nameController.text,
                                       address: addressController.text,
                                       location: LatLng(latLng.latitude, latLng.longitude)
                                   );
-                                  await locations.doc(marker.title).set(marker.toJson());
+                                  await setupLocation(marker);
                                   Navigator.pop(context);
                                   return;
                                 },
