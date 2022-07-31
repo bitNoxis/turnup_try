@@ -18,8 +18,9 @@ Stream<List<User>> readUsers() =>
         snapshot.docs.map((doc) => User.fromJson(doc.data())).toList());
 
 Stream<List<User>> readUsersList(bool Function(User) test) =>
-    FirebaseFirestore.instance.collection('Users').snapshots().map((snapshot) =>
-        snapshot.docs
+    FirebaseFirestore.instance.collection('Users').orderBy('points', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
             .map((doc) => User.fromJson(doc.data()))
             .where(test)
             .toList());

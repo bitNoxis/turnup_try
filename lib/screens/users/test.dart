@@ -70,8 +70,8 @@ class _OurUsers extends State<OurUsers> {
 
   Widget buildUser(User user) => ListTile(
         leading: CircleAvatar(
-          child: Text(user.points.toStringAsFixed(1)),
           radius: 40,
+          child: Text(user.points.toStringAsFixed(1)),
         ),
         title: Text(user.name),
         subtitle: Text(user.id),
