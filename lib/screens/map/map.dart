@@ -1,10 +1,12 @@
+import 'dart:async';
 import 'dart:ui';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:turnup_try/currently_logged_in.dart';
 import 'package:turnup_try/models/markers.dart';
 import 'package:turnup_try/utils/firebase.dart';
 
@@ -19,7 +21,7 @@ const URL_TEMPLATE =
 const MARKER_SIZE_EXPANDED = 55.0;
 const MARKER_SIZE_SHRINKED = 35.0;
 
-final _myLocation = LatLng(53.4529399, 9.9733788);
+LatLng _myLocation = LatLng(53.4529399, 9.9733788);
 
 final nameController = TextEditingController();
 final addressController = TextEditingController();
@@ -41,10 +43,25 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
   final _pageController = PageController();
   late final AnimationController _animationController;
   int _selectedIndex = 0;
+  late StreamSubscription<Position> positionStreamSubscription;
+  final MapController _mapController = MapController();
 
   @override
   void initState() {
     super.initState();
+    Geolocator.getLastKnownPosition().then((value) {
+      debugPrint('this was called');
+      debugPrint(value.toString());
+      _myLocation = LatLng(value!.latitude, value.longitude);
+    });
+    positionStreamSubscription = Geolocator.getPositionStream(locationSettings: const LocationSettings(distanceFilter: 5))
+        .listen((event) {
+      setState(() {
+        getUserLocation();
+        _myLocation = LatLng(event.latitude, event.longitude);
+      });
+      _mapController.move(_myLocation, _mapController.zoom);
+    });
     mapMarkers = [];
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 800));
@@ -54,6 +71,7 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
   @override
   void dispose() {
     _animationController.dispose();
+    positionStreamSubscription.cancel();
     super.dispose();
   }
 
@@ -103,7 +121,9 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
                 /// Hier werden die aus dem StreamBuilder gebauten
                 /// Marker dargestellt.
                 return FlutterMap(
+                  mapController: _mapController,
                   options: MapOptions(
+                    controller: _mapController,
                     minZoom: 5,
                     maxZoom: 16,
                     zoom: 11.8,
@@ -304,9 +324,9 @@ class _MapItemDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const _styleTitle = TextStyle(
+    const styleTitle = TextStyle(
         color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold);
-    final _styleAddress = TextStyle(color: Colors.grey[800], fontSize: 14);
+    final styleAddress = TextStyle(color: Colors.grey[800], fontSize: 14);
     return Padding(
         padding: const EdgeInsets.all(20.0),
         child: Container(
@@ -337,18 +357,23 @@ class _MapItemDetails extends StatelessWidget {
                     children: [
                       Text(
                         mapMarker.title,
-                        style: _styleTitle,
+                        style: styleTitle,
                       ),
                       const SizedBox(height: 10),
                       Text(
                         mapMarker.address,
-                        style: _styleAddress,
+                        style: styleAddress,
                       ),
                     ],
                   ))
                 ]),
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                )),
+                onPressed: () {},
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 80),
                   child: Text(
@@ -359,11 +384,6 @@ class _MapItemDetails extends StatelessWidget {
                         fontSize: 15.0),
                   ),
                 ),
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                )),
-                onPressed: () {},
               ),
             ],
           ),
