@@ -11,6 +11,7 @@ import 'package:geolocator/geolocator.dart';
 User? loggedInUser;
 late LatLng userLocation;
 Position? _position;
+LocationSettings locationSettings = const LocationSettings(distanceFilter: 5);
 
 Future initialize() async {
   onLogin();
@@ -36,7 +37,7 @@ Future<LatLng> getUserLocation() async {
   LocationPermission permission;
 
   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled){
+  if (!serviceEnabled) {
     return Future.error('Location not enabled');
   }
 
@@ -49,8 +50,11 @@ Future<LatLng> getUserLocation() async {
   }
 
   _position = await Geolocator.getCurrentPosition();
-
-  userLocation = LatLng(_position!.latitude, _position!.longitude);
+  userLocation = positionToLatLng(_position!);
+  // userLocation = LatLng(_position!.latitude, _position!.longitude);
   return userLocation;
 }
 
+LatLng positionToLatLng(Position position) {
+  return LatLng(position.latitude, position.longitude);
+}

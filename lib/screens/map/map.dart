@@ -46,22 +46,30 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
   late StreamSubscription<Position> positionStreamSubscription;
   final MapController _mapController = MapController();
 
+void createLocation() {
+  // holt sich erstmal die letzte Position damit
+  // die Karte nicht ganz wo anders startet
+  Geolocator.getLastKnownPosition().then((value) {
+    setState(() {
+      _myLocation = positionToLatLng(value!);
+    });
+  });
+
+  // packt einen Listener auf den Stream, wenn sich Standort ändert
+  // wird auch die Karte geupdatet dafür auch das setState
+  positionStreamSubscription = Geolocator.getPositionStream(locationSettings: locationSettings)
+      .listen((event) {
+        setState(() {
+          _myLocation = positionToLatLng(event);
+        });
+        _mapController.move(_myLocation, _mapController.zoom);
+  });
+}
+
   @override
   void initState() {
     super.initState();
-    Geolocator.getLastKnownPosition().then((value) {
-      debugPrint('this was called');
-      debugPrint(value.toString());
-      _myLocation = LatLng(value!.latitude, value.longitude);
-    });
-    positionStreamSubscription = Geolocator.getPositionStream(locationSettings: const LocationSettings(distanceFilter: 5))
-        .listen((event) {
-      setState(() {
-        getUserLocation();
-        _myLocation = LatLng(event.latitude, event.longitude);
-      });
-      _mapController.move(_myLocation, _mapController.zoom);
-    });
+    createLocation();
     mapMarkers = [];
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 800));
@@ -84,13 +92,8 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
         actions: [
           IconButton(
               icon: const Icon(Icons.add),
-              // TODO should create at the current Location a new Marker
               onPressed: () async {
-                MapMarker marker = MapMarker(
-                    title: 'Test',
-                    address: 'Test Street 123',
-                    location: _myLocation);
-                await setupLocation(marker);
+                await addNewMarkerPopUp(context, _myLocation);
               }),
           IconButton(
             icon: const Icon(Icons.filter_alt_outlined),
@@ -130,63 +133,8 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
                     interactiveFlags:
                         InteractiveFlag.pinchZoom | InteractiveFlag.drag,
                     center: _myLocation,
-                    onLongPress: (tapPosition, latLng) {
-                  Navigator.push(
-                    context,
-                    HeroDialogRoute(
-                      builder: (BuildContext context) {
-                        return Center(
-                          child: AlertDialog(
-                            title: const Text('Add a new Marker'),
-                            content: Container(
-                              child: Hero(
-                                tag: 'developer-hero',
-                                child: Container(
-                                  height: 300.0,
-                                  width: 300.0,
-                                  child: ListView(children: [
-                                    TextFormField(
-                                      decoration: const InputDecoration(
-                                        hintText: 'Name'
-                                      ),
-                                      controller: nameController,
-                                    ),
-                                    const Divider(height: 20, color: Colors.transparent,),
-                                    TextFormField(
-                                      decoration: const InputDecoration(hintText: 'Address'),
-                                      controller: addressController,
-                                    )
-                                  ],)
-                                ),
-                              ),
-                            ),
-                            actions: <Widget>[
-                              CupertinoDialogAction(
-                                child: const Text('Add Marker'),
-                                onPressed: () async {
-                                  MapMarker marker = MapMarker(
-                                      title: nameController.text,
-                                      address: addressController.text,
-                                      location: LatLng(latLng.latitude, latLng.longitude)
-                                  );
-                                  await setupLocation(marker);
-                                  Navigator.pop(context);
-                                  return;
-                                },
-                              ),
-                              CupertinoDialogAction(
-                                child: const Text('Never Mind'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  return;
-                                },
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  );
+                    onLongPress: (tapPosition, latLng) async {
+                  await addNewMarkerPopUp(context, latLng);
                 },
                   ),
                   layers: [
@@ -228,6 +176,65 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Future<void> addNewMarkerPopUp(BuildContext context, LatLng latLng) async {
+    Navigator.push(
+      context,
+      HeroDialogRoute(
+        builder: (BuildContext context) {
+          return Center(
+            child: AlertDialog(
+              title: const Text('Add a new Marker'),
+              content: Container(
+                child: Hero(
+                  tag: 'developer-hero',
+                  child: Container(
+                    height: 300.0,
+                    width: 300.0,
+                    child: ListView(children: [
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          hintText: 'Name'
+                        ),
+                        controller: nameController,
+                      ),
+                      const Divider(height: 20, color: Colors.transparent,),
+                      TextFormField(
+                        decoration: const InputDecoration(hintText: 'Address'),
+                        controller: addressController,
+                      )
+                    ],)
+                  ),
+                ),
+              ),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: const Text('Add Marker'),
+                  onPressed: () async {
+                    MapMarker marker = MapMarker(
+                        title: nameController.text,
+                        address: addressController.text,
+                        location: LatLng(latLng.latitude, latLng.longitude)
+                    );
+                    await setupLocation(marker);
+                    Navigator.pop(context);
+                    return;
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: const Text('Never Mind'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    return;
+                  },
+                )
+              ],
+            ),
+          );
+        },
       ),
     );
   }

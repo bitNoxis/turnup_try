@@ -1,5 +1,5 @@
 PODS:
-  - cloud_firestore (3.4.0):
+  - cloud_firestore (3.4.3):
     - Firebase/Firestore (= 9.3.0)
     - firebase_core
     - Flutter
@@ -14,14 +14,14 @@ PODS:
   - Firebase/Storage (9.3.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 9.3.0)
-  - firebase_auth (3.4.2):
+  - firebase_auth (3.6.2):
     - Firebase/Auth (= 9.3.0)
     - firebase_core
     - Flutter
   - firebase_core (1.20.0):
     - Firebase/CoreOnly (= 9.3.0)
     - Flutter
-  - firebase_storage (10.3.3):
+  - firebase_storage (10.3.4):
     - Firebase/Storage (= 9.3.0)
     - firebase_core
     - Flutter
@@ -86,11 +86,15 @@ PODS:
   - GoogleUtilities/Reachability (7.7.0):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (2.0.0)
+  - location (0.0.1):
+    - Flutter
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
+  - permission_handler_apple (9.0.4):
+    - Flutter
   - PromisesObjC (2.1.1)
 
 DEPENDENCIES:
@@ -101,6 +105,8 @@ DEPENDENCIES:
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `9.3.0`)
   - Flutter (from `Flutter`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
+  - location (from `.symlinks/plugins/location/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
 
 SPEC REPOS:
   trunk:
@@ -136,6 +142,10 @@ EXTERNAL SOURCES:
     :path: Flutter
   geolocator_apple:
     :path: ".symlinks/plugins/geolocator_apple/ios"
+  location:
+    :path: ".symlinks/plugins/location/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
 
 CHECKOUT OPTIONS:
   FirebaseFirestore:
@@ -143,11 +153,11 @@ CHECKOUT OPTIONS:
     :tag: 9.3.0
 
 SPEC CHECKSUMS:
-  cloud_firestore: bd7f9d191e32f21b46c99884ddff554e2aab4554
+  cloud_firestore: 08093e207dfb2e6c82a6b272def699e022548786
   Firebase: ef75abb1cdbc746d5a38f4e26c422c807b189b8c
-  firebase_auth: abe46b4b5465b491c48ea4c9d4c031c40f0fd4af
+  firebase_auth: e4bd9a01f6c45764bf3bfb0cea4d5ce3673a92a2
   firebase_core: 96214f90497b808a2cf2a24517084c5f6de37b53
-  firebase_storage: 67c6bff2cda59f5973ea9fb2c4fca845c3055a5b
+  firebase_storage: e95ec41580e311cb30b1ed7459b9e94fb4bbe672
   FirebaseAppCheckInterop: f6b9670fb1360cf12006ca426e9c3b9a35317d17
   FirebaseAuth: 9ebc3577fe0acf9092df21ac314024b70aebf21e
   FirebaseAuthInterop: 79826b4edc64e1d10135947866ad4437657e8696
@@ -163,7 +173,9 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   GTMSessionFetcher: 681175626052e03fdde7952f7e9c7a9785719506
+  location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
 
 PODFILE CHECKSUM: 13d43fea00383f34430b694dfc22f5edb60faa81

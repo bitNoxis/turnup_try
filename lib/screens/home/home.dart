@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text("Eventueller HomeScreen ${loggedInUser!.name}"),
+          title: Text("Eventueller HomeScreen"),
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: 20.0),
