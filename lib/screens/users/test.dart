@@ -30,6 +30,13 @@ class _OurUsers extends State<OurUsers> {
               controller: controller,
               decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.search),
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          users = readUsers();
+                          controller.clear();
+                        });
+                      }, icon: const Icon(Icons.clear)),
                   hintText: 'Search',
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
@@ -62,9 +69,7 @@ class _OurUsers extends State<OurUsers> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () async {
-          }),
+          child: const Icon(Icons.add), onPressed: () async {}),
     );
   }
 
@@ -107,8 +112,8 @@ class _OurUsers extends State<OurUsers> {
             child: const Text('Change'),
             onPressed: () {
               docUser.update({
-                'points':
-                    userToChange.points + double.parse(numberController.text.replaceAll(',', '.'))
+                'points': userToChange.points +
+                    double.parse(numberController.text.replaceAll(',', '.'))
               });
               Navigator.pop(context);
               return;

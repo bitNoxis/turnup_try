@@ -220,6 +220,7 @@ void createLocation() {
                         location: LatLng(latLng.latitude, latLng.longitude)
                     );
                     await setupLocation(marker);
+                    if (!mounted) return;
                     Navigator.pop(context);
                     return;
                   },
@@ -282,9 +283,9 @@ class _LocationMarker extends StatelessWidget {
 }
 
 class _MyLocationMarker extends AnimatedWidget {
-  const _MyLocationMarker(Animation<double> animation, {Key? Key})
+  const _MyLocationMarker(Animation<double> animation, {Key? key})
       : super(
-          key: Key,
+          key: key,
           listenable: animation,
         );
 
@@ -323,9 +324,9 @@ class _MyLocationMarker extends AnimatedWidget {
 
 class _MapItemDetails extends StatelessWidget {
   const _MapItemDetails({
-    Key? Key,
+    Key? key,
     required this.mapMarker,
-  }) : super(key: Key);
+  }) : super(key: key);
 
   final MapMarker mapMarker;
 
