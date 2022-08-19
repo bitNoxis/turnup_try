@@ -149,6 +149,7 @@ class _OurUsers extends State<OurUsers> {
         title: Text(user.name),
         subtitle: Text(user.id),
         onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
           numberController.clear();
           updateSelected(user);
         },
