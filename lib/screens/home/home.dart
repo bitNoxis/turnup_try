@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:turnup_try/currently_logged_in.dart';
 import 'package:turnup_try/screens/map/map.dart';
-import 'package:turnup_try/screens/users/test.dart';
+import 'package:turnup_try/screens/leaderboard/user_leaderboard.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text("Eventueller HomeScreen"),
+          title: const Text("Eventueller HomeScreen"),
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: 20.0),
@@ -65,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                           builder: (context) => const OurUsers()));
                     },
                     child: const Text(
-                      "User",
+                      "Leaderboard",
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
