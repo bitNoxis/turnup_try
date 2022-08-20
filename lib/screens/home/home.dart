@@ -40,51 +40,35 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const AnimatedMarkersMap()));
-                    },
-                    child: const Text(
-                      "Zur Map",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.0),
-                    ),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const OurUsers()));
-                    },
-                    child: const Text(
-                      "Leaderboard",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.0),
-                    ),
-                  ),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20))),
-                      onPressed: () {
-                        debugPrint(loggedInUser?.name);
-                        debugPrint(userLocation.toString());
-                      },
-                      child: const Text("Das hier ist jetzt ein langer Text")),
+                  buildElevatedButton(
+                      context, 'Zur Map', const AnimatedMarkersMap()),
+                  buildElevatedButton(
+                      context, 'Start Event', const HomeScreen()),
+                  buildElevatedButton(context, 'Leaderboard', const OurUsers()),
+                  buildElevatedButton(context, 'Das hier ist ein langer Text',
+                      const HomeScreen())
                 ],
               ),
             ),
           )
         ]));
+  }
+
+  ElevatedButton buildElevatedButton(
+      BuildContext context, String textName, Widget widget) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+      onPressed: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => widget));
+      },
+      child: Text(
+        textName,
+        style: const TextStyle(
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15.0),
+      ),
+    );
   }
 }

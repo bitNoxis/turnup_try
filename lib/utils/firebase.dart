@@ -13,11 +13,6 @@ Future<void> userSetup(String displayName) async {
   return;
 }
 
-// Stream<List<User>> readUsers() =>
-//     FirebaseFirestore.instance.collection('Users').orderBy('points', descending: true)
-//         .snapshots().map((snapshot) =>
-//         snapshot.docs.map((doc) => User.fromJson(doc.data())).toList());
-
 Stream<List<User>> readUsers(bool Function(User) whereName, String orderByString, bool descending) =>
     FirebaseFirestore.instance.collection('Users').orderBy(orderByString, descending: descending)
         .snapshots()
