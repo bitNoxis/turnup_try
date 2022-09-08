@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:turnup_try/screens/signup/signup.dart';
 
@@ -8,6 +7,8 @@ import '../../../widgets/ourContainer.dart';
 class OurLoginForm extends StatelessWidget {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  OurLoginForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,22 +50,12 @@ class OurLoginForm extends StatelessWidget {
             height: 20.0,
           ),
           ElevatedButton(
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 80),
-                child: Text(
-                  "Einloggen",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15.0),
-                ),
-              ),
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               )),
-              onPressed: () {
-                FirebaseAuth.instance
+              onPressed: () async {
+                await FirebaseAuth.instance
                     .signInWithEmailAndPassword(
                         email: emailController.text,
                         password: passwordController.text)
@@ -74,7 +65,8 @@ class OurLoginForm extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      content: const Text('Das Passwort oder die E-Mail ist falsch!'),
+                      content: const Text(
+                          'Das Passwort oder die E-Mail ist falsch!'),
                       actions: [
                         TextButton(
                           child: const Text('Erneut versuchen'),
@@ -84,7 +76,17 @@ class OurLoginForm extends StatelessWidget {
                     ),
                   );
                 });
-              }),
+              },
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 80),
+                child: Text(
+                  "Einloggen",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.0),
+                ),
+              )),
           TextButton(
             child: const Text("Noch keinen Account? Hier registrieren."),
             onPressed: () {

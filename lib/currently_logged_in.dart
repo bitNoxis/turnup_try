@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,8 +13,9 @@ Position? _position;
 LocationSettings locationSettings = const LocationSettings(distanceFilter: 5);
 
 Future initialize() async {
-  onLogin();
-  getUserLocation();
+  await onLogin();
+  await getUserLocation();
+  debugPrint(loggedInUser?.toJson().toString());
 }
 
 Future onLogin() async {
@@ -42,7 +42,7 @@ Future<LatLng> getUserLocation() async {
   }
 
   permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied){
+  if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
       return Future.error('Permission denied');
@@ -51,7 +51,6 @@ Future<LatLng> getUserLocation() async {
 
   _position = await Geolocator.getCurrentPosition();
   userLocation = positionToLatLng(_position!);
-  // userLocation = LatLng(_position!.latitude, _position!.longitude);
   return userLocation;
 }
 
