@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:turnup_try/screens/signup/signup.dart';
+import 'package:turnup_try/screens/signup/sign_up.dart';
 
-import '../../../widgets/ourContainer.dart';
+import '../../../widgets/our_container.dart';
 
 class OurLoginForm extends StatelessWidget {
   final emailController = TextEditingController();
@@ -92,7 +92,7 @@ class OurLoginForm extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => OurSignUp(),
+                  builder: (context) => const OurSignUp(),
                 ),
               );
             },

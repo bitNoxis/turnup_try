@@ -3,12 +3,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:turnup_try/utils/firebase.dart';
 
-import '../../../widgets/ourContainer.dart';
+import '../../../widgets/our_container.dart';
 
 class OurSignUpForm extends StatelessWidget {
   final userNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  OurSignUpForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +61,25 @@ class OurSignUpForm extends StatelessWidget {
             height: 20.0,
           ),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            )),
+            onPressed: () async {
+              try {
+                await Firebase.initializeApp();
+                UserCredential user = await FirebaseAuth.instance
+                    .createUserWithEmailAndPassword(
+                        email: emailController.text,
+                        password: passwordController.text);
+                User? updateUser = FirebaseAuth.instance.currentUser;
+                updateUser?.updateDisplayName(userNameController.text);
+                userSetup(userNameController.text);
+                Navigator.of(context).pushReplacementNamed("/home");
+              } catch (e) {
+                debugPrint(e.toString());
+              }
+            },
             child: const Padding(
               padding: EdgeInsets.symmetric(horizontal: 80),
               child: Text(
@@ -69,26 +90,6 @@ class OurSignUpForm extends StatelessWidget {
                     fontSize: 15.0),
               ),
             ),
-            style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            )),
-            onPressed: () async {
-              try {
-                await Firebase.initializeApp();
-                UserCredential user =
-                await FirebaseAuth.instance
-                    .createUserWithEmailAndPassword(
-                    email: emailController.text,
-                    password: passwordController.text);
-                User? updateUser = FirebaseAuth.instance.currentUser;
-                updateUser?.updateDisplayName(userNameController.text);
-                userSetup(userNameController.text);
-                Navigator.of(context).pushReplacementNamed("/home");
-              } catch (e) {
-                print(e.toString());
-              }
-            },
           ),
         ],
       ),
