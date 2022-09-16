@@ -31,7 +31,7 @@ class OurHomeScreen extends State<HomeScreen> {
       return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            title: Text(loggedInUser!.name),
+            title: const Text('Eventueller Homescreen'),
             actions: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right: 20.0),
@@ -83,10 +83,7 @@ class OurHomeScreen extends State<HomeScreen> {
             )
           ]));
     } else {
-      return Scaffold(
-          backgroundColor: Theme.of(context).backgroundColor,
-          body: const Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
   }
 

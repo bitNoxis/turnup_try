@@ -130,8 +130,9 @@ class _OurUsers extends State<OurUsers> {
               ],
             )));
   }
+
   Widget buildUser(User user) => ListTile(
-    tileColor: user.id == loggedInUser!.id ? Colors.green : null,
+        tileColor: user.id == loggedInUser!.id ? Colors.green : null,
         leading: CircleAvatar(
           radius: 40,
           child: Text(user.points.toStringAsFixed(1)),
@@ -170,10 +171,10 @@ class _OurUsers extends State<OurUsers> {
           CupertinoDialogAction(
             child: const Text('Change'),
             onPressed: () {
-              docUser.update({
-                'points': userToChange.points +
-                    double.parse(numberController.text.replaceAll(',', '.'))
-              });
+              double pointsToAdd =
+                  double.parse(numberController.text.replaceAll(',', '.'));
+              loggedInUser!.points += pointsToAdd;
+              docUser.update({'points': userToChange.points + pointsToAdd});
               Navigator.pop(context);
               return;
             },

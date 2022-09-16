@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:turnup_try/screens/home/home.dart';
 import 'package:turnup_try/screens/login/login.dart';
-import 'package:turnup_try/utils/ourTheme.dart';
+import 'package:turnup_try/utils/our_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -30,7 +30,7 @@ class _OurDateTest extends State<DateTest> {
       body: Center(
         child: Column(
           children: [
-            Text(start != null ? DateFormat.yMd().format(start!) : 'Nothing yet'),
+            Text(start != null ? DateFormat.yMd().add_jm().format(start!) : 'Nothing yet'),
             ElevatedButton(onPressed: () {
               setState(() {
                 start = DateTime.now();

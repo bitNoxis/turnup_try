@@ -12,10 +12,10 @@ class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
 
   @override
-  _ProfileViewState createState() => _ProfileViewState();
+  ProfileViewState createState() => ProfileViewState();
 }
 
-class _ProfileViewState extends State<ProfileView> {
+class ProfileViewState extends State<ProfileView> {
   @override
   void initState() {
     loggedInUser!.photoUrl;
@@ -43,22 +43,24 @@ class _ProfileViewState extends State<ProfileView> {
                     onTap: () async {
                       XFile? image = await ImagePicker()
                           .pickImage(source: ImageSource.gallery);
-                      FirebaseStorage storage = FirebaseStorage.instance;
-                      Reference ref = storage
-                          .ref('profilepictures')
-                          .child('${loggedInUser!.id}ProfilePicture');
-                      UploadTask task = ref.putFile(File(image!.path));
-                      task.then((snapshot) {
-                        snapshot.ref.getDownloadURL().then((value) {
-                          setState(() {
-                            loggedInUser!.photoUrl = value;
-                            FirebaseFirestore.instance
-                                .collection('Users')
-                                .doc(loggedInUser!.id)
-                                .update({'photoURL': value});
+                      if (image != null) {
+                        FirebaseStorage storage = FirebaseStorage.instance;
+                        Reference ref = storage
+                            .ref('profilepictures')
+                            .child('${loggedInUser!.id}ProfilePicture');
+                        UploadTask task = ref.putFile(File(image.path));
+                        task.then((snapshot) {
+                          snapshot.ref.getDownloadURL().then((value) {
+                            setState(() {
+                              loggedInUser!.photoUrl = value;
+                              FirebaseFirestore.instance
+                                  .collection('Users')
+                                  .doc(loggedInUser!.id)
+                                  .update({'photoURL': value});
+                            });
                           });
                         });
-                      });
+                      }
                     },
                     child: Center(
                       child: loggedInUser!.photoUrl.isEmpty
@@ -74,6 +76,8 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                   ),
                   Text("Hi ${loggedInUser!.name} nice to see you here."),
+                  Text(
+                      'Deine Punkte sind: ${loggedInUser!.points.toStringAsFixed(2)}'),
                 ],
               ),
             ),

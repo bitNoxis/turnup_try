@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
-import 'package:flutter/cupertino.dart';
 import 'package:turnup_try/models/user.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
@@ -15,12 +14,10 @@ LocationSettings locationSettings = const LocationSettings(distanceFilter: 5);
 Future initialize() async {
   await onLogin();
   await getUserLocation();
-  debugPrint(loggedInUser?.toJson().toString());
 }
 
 Future onLogin() async {
   if (loggedInUser == null) {
-    debugPrint('yes it worked');
     FirebaseAuth auth = FirebaseAuth.instance;
     String test = auth.currentUser!.uid;
     var docUsers = FirebaseFirestore.instance.collection('Users').doc(test);
@@ -38,14 +35,14 @@ Future<LatLng> getUserLocation() async {
 
   serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
-    return Future.error('Location not enabled');
+    return Future.error('Location wurde nicht aktiviert');
   }
 
   permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
-      return Future.error('Permission denied');
+      return Future.error('Erlaubnis wurde abgelehnt');
     }
   }
 
