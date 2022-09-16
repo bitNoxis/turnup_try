@@ -12,14 +12,14 @@ import 'package:turnup_try/utils/firebase.dart';
 
 import '../../widgets/hero_dialog_route.dart';
 
-const MAPBOX_ACCESS_TOKEN =
+const mapboxAccessToken =
     'pk.eyJ1IjoibHVjYXNtYXR6ZSIsImEiOiJjbDI4dmtjcHAwYm95M2ptZXM1N3c4dGt3In0._6J67UkB6tn-o_z6quqSkg';
-const MARKER_COLOR = Color(0xFF3DC5A7);
-const URL_TEMPLATE =
+const markerColor = Color(0xFF3DC5A7);
+const urlTemplate =
     'https://api.mapbox.com/styles/v1/lucasmatze/cl28vr80f000415l1guw9ojlx/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVjYXNtYXR6ZSIsImEiOiJjbDI4dmtjcHAwYm95M2ptZXM1N3c4dGt3In0._6J67UkB6tn-o_z6quqSkg';
 
-const MARKER_SIZE_EXPANDED = 55.0;
-const MARKER_SIZE_SHRINKED = 35.0;
+const markerSizeExpanded = 55.0;
+const markerSizeShrinked = 35.0;
 
 LatLng _myLocation = LatLng(53.4529399, 9.9733788);
 
@@ -46,25 +46,25 @@ class _AnimatedMarkersMapState extends State<AnimatedMarkersMap>
   late StreamSubscription<Position> positionStreamSubscription;
   final MapController _mapController = MapController();
 
-void createLocation() {
-  // holt sich erstmal die letzte Position damit
-  // die Karte nicht ganz wo anders startet
-  Geolocator.getLastKnownPosition().then((value) {
-    setState(() {
-      _myLocation = positionToLatLng(value!);
+  void createLocation() {
+    // holt sich erstmal die letzte Position damit
+    // die Karte nicht ganz wo anders startet
+    Geolocator.getLastKnownPosition().then((value) {
+      setState(() {
+        _myLocation = positionToLatLng(value!);
+      });
     });
-  });
 
-  // packt einen Listener auf den Stream, wenn sich Standort ändert
-  // wird auch die Karte geupdatet dafür auch das setState
-  positionStreamSubscription = Geolocator.getPositionStream(locationSettings: locationSettings)
-      .listen((event) {
-        setState(() {
-          _myLocation = positionToLatLng(event);
-        });
-        _mapController.move(_myLocation, _mapController.zoom);
-  });
-}
+    // packt einen Listener auf den Stream, wenn sich Standort ändert
+    // wird auch die Karte geupdatet dafür auch das setState
+    positionStreamSubscription =
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((event) {
+      setState(() {
+        _myLocation = positionToLatLng(event);
+      });
+    });
+  }
 
   @override
   void initState() {
@@ -126,7 +126,6 @@ void createLocation() {
                 return FlutterMap(
                   mapController: _mapController,
                   options: MapOptions(
-                    controller: _mapController,
                     minZoom: 5,
                     maxZoom: 16,
                     zoom: 11.8,
@@ -134,18 +133,18 @@ void createLocation() {
                         InteractiveFlag.pinchZoom | InteractiveFlag.drag,
                     center: _myLocation,
                     onLongPress: (tapPosition, latLng) async {
-                  await addNewMarkerPopUp(context, latLng);
-                },
+                      await addNewMarkerPopUp(context, latLng);
+                    },
                   ),
-                  layers: [
-                    TileLayerOptions(
-                        urlTemplate: URL_TEMPLATE,
-                        additionalOptions: {
-                          'accessToken': MAPBOX_ACCESS_TOKEN,
+                  children: [
+                    TileLayer(
+                        urlTemplate: urlTemplate,
+                        additionalOptions: const {
+                          'accessToken': mapboxAccessToken,
                           'id': 'mapbox.mapbox-streets-v8',
                         }),
-                    MarkerLayerOptions(markers: markers),
-                    MarkerLayerOptions(markers: [
+                    MarkerLayer(markers: markers),
+                    MarkerLayer(markers: [
                       Marker(
                           height: 60,
                           width: 60,
@@ -177,6 +176,17 @@ void createLocation() {
           ),
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: IconButton(
+        highlightColor: Colors.red,
+        icon: const Icon(Icons.location_on_outlined),
+        color: Colors.white,
+        onPressed: () {
+          setState(() {
+            _mapController.move(_myLocation, _mapController.zoom);
+          });
+        },
+      ),
     );
   }
 
@@ -188,27 +198,28 @@ void createLocation() {
           return Center(
             child: AlertDialog(
               title: const Text('Add a new Marker'),
-              content: Container(
-                child: Hero(
-                  tag: 'developer-hero',
-                  child: Container(
+              content: Hero(
+                tag: 'developer-hero',
+                child: SizedBox(
                     height: 300.0,
                     width: 300.0,
-                    child: ListView(children: [
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          hintText: 'Name'
+                    child: ListView(
+                      children: [
+                        TextFormField(
+                          decoration: const InputDecoration(hintText: 'Name'),
+                          controller: nameController,
                         ),
-                        controller: nameController,
-                      ),
-                      const Divider(height: 20, color: Colors.transparent,),
-                      TextFormField(
-                        decoration: const InputDecoration(hintText: 'Address'),
-                        controller: addressController,
-                      )
-                    ],)
-                  ),
-                ),
+                        const Divider(
+                          height: 20,
+                          color: Colors.transparent,
+                        ),
+                        TextFormField(
+                          decoration:
+                              const InputDecoration(hintText: 'Address'),
+                          controller: addressController,
+                        )
+                      ],
+                    )),
               ),
               actions: <Widget>[
                 CupertinoDialogAction(
@@ -217,8 +228,7 @@ void createLocation() {
                     MapMarker marker = MapMarker(
                         title: nameController.text,
                         address: addressController.text,
-                        location: LatLng(latLng.latitude, latLng.longitude)
-                    );
+                        location: LatLng(latLng.latitude, latLng.longitude));
                     await setupLocation(marker);
                     if (!mounted) return;
                     Navigator.pop(context);
@@ -241,8 +251,8 @@ void createLocation() {
   }
 
   Marker buildMarker(MapMarker marker, int i) => Marker(
-        height: MARKER_SIZE_EXPANDED,
-        width: MARKER_SIZE_EXPANDED,
+        height: markerSizeExpanded,
+        width: markerSizeExpanded,
         point: marker.location,
         builder: (_) {
           return GestureDetector(
@@ -270,7 +280,7 @@ class _LocationMarker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = selected ? MARKER_SIZE_EXPANDED : MARKER_SIZE_SHRINKED;
+    final size = selected ? markerSizeExpanded : markerSizeShrinked;
     return Center(
       child: AnimatedContainer(
         height: size,
@@ -303,7 +313,7 @@ class _MyLocationMarker extends AnimatedWidget {
             width: size * newValue,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: MARKER_COLOR.withOpacity(0.5),
+              color: markerColor.withOpacity(0.5),
             ),
           ),
         ),
@@ -312,7 +322,7 @@ class _MyLocationMarker extends AnimatedWidget {
             height: 20,
             width: 20,
             decoration: const BoxDecoration(
-              color: MARKER_COLOR,
+              color: markerColor,
               shape: BoxShape.circle,
             ),
           ),
