@@ -30,12 +30,15 @@ dependencies:
   flutter:
     sdk: flutter
 
+
+  google_sign_in:
+  font_awesome_flutter:
   firebase_core:
   firebase_auth:
   cloud_firestore: ^3.1.4
   firebase_storage:
   firestore_search: ^0.1.9
-
+  latlong2: ^0.8.1
   provider:
 
 
@@ -44,7 +47,7 @@ dependencies:
   intl: ^0.17.0
   image_picker: ^0.8.3+1
   cupertino_icons: ^1.0.2
-  flutter_map: ^2.1.1
+  flutter_map: ^3.0.0
   geolocator: ^9.0.1
 
 dev_dependencies:
